@@ -1,9 +1,12 @@
 from mongo import MongoDBInstance
 from datetime import datetime
+from pprint import pprint
 
 DB = 'searchlight'
 COLLECTION = 'articles'
-mongo = MongoDBInstance(db=DB, coll=COLLECTION)
+HOST = 'localhost'
+PORT = 27017
+mongo = MongoDBInstance(db=DB, coll=COLLECTION, h=HOST, p=PORT)
 
 example = {
 	"title": "Example Schema",
@@ -26,14 +29,14 @@ example = {
 }
 
 try:
-	mongo.create(example)
+	record = mongo.create(example)
 except Exception as e:
 	print e
 
 try:
-	record = mongo.read(obj_id=1)
-	print type(record)
-
+	result = mongo.read(obj_id=record)
+	for record in result:
+		pprint(record)
 except Exception as e:
 	print e
 
@@ -42,10 +45,10 @@ try:
 except Exception as e:
 	print e
 
-# try:
-# 	mongo.delete(example)
-# except Exception as e:
-# 	print e
+try:
+	mongo.delete(example)
+except Exception as e:
+	print e
 
 
 
